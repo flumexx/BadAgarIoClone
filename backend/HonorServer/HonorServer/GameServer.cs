@@ -27,7 +27,7 @@ namespace HonorServer
                 physicsWorld = new PhysicsWorld(PublishObjectSpawnedToParent, PublishObjectDespawnedToParent, PublishObjectUpdatedToParent);
                 server = new WebSocketServer("ws://0.0.0.0:" + port);
 
-                Spawner spawner = physicsWorld.CreateSpawner(GameObject.Create(" ", 1, "#fff"), 20, 3000);
+                Spawner spawner = physicsWorld.CreateSpawner(GameObject.Create(" ", 1, "#fff"), 20, 500);
 
                 physicsWorld.Start();
                 spawner.Start();
@@ -130,6 +130,7 @@ namespace HonorServer
             if (isRunning)
             {
                 server.Dispose();
+                physicsWorld.Stop();
 
                 lock (clients)
                 {
@@ -173,8 +174,17 @@ namespace HonorServer
             {
                 foreach (WebSocketClient otherClient in clients)
                 {
-                    SendMessageToClient(otherClient, ParameterMap.Stringify("type", "5",
-                        "id", gameObject.GetIdentifier()));
+                    if (otherClient.GetPlayerObject() != null)
+                    {
+                        if (otherClient.GetPlayerObject() == gameObject)
+                        {
+                            otherClient.SetPlayerObject(null);
+                            gameObject.SetIsPlayerObject(false);
+                        }
+
+                        SendMessageToClient(otherClient, ParameterMap.Stringify("type", "5",
+                            "id", gameObject.GetIdentifier()));
+                    }
                 }
             }
         }
@@ -185,13 +195,17 @@ namespace HonorServer
             {
                 foreach (WebSocketClient otherClient in clients)
                 {
-                    SendMessageToClient(otherClient, ParameterMap.Stringify("type", "4",
-                        "id", gameObject.GetIdentifier(),
-                        "x", gameObject.GetPosXAsString(),
-                        "y", gameObject.GetPosYAsString(),
-                        "size", gameObject.GetSizeAsString(),
-                        "name", gameObject.GetName(),
-                        "color", gameObject.GetColor()));
+                    if (otherClient.GetPlayerObject() != null)
+                    {
+                        SendMessageToClient(otherClient, ParameterMap.Stringify("type", "4",
+                            "id", gameObject.GetIdentifier(),
+                            "x", gameObject.GetPosXAsString(),
+                            "y", gameObject.GetPosYAsString(),
+                            "size", gameObject.GetSizeAsString(),
+                            "name", gameObject.GetName(),
+                            "color", gameObject.GetColor(),
+                            "score", gameObject.GetScore().ToString()));
+                    }
                 }
             }
         }
@@ -227,7 +241,7 @@ namespace HonorServer
             {
                 if (type != 1)
                 {
-                    Console.WriteLine("Received message from " + client.GetSocketAddress() + ": " + ParameterMap.Stringify(parameterMap));
+                    //Console.WriteLine("Received message from " + client.GetSocketAddress() + ": " + ParameterMap.Stringify(parameterMap));
                 }
 
                 switch (type)
@@ -253,9 +267,10 @@ namespace HonorServer
 
         private void OnClientReady(WebSocketClient client, string name, string color)
         {
-            GameObject playerObject = physicsWorld.CreateObject(name, 5, color);
+            GameObject playerObject = physicsWorld.CreateObject(name, 2, color);
 
             client.SetPlayerObject(playerObject);
+            playerObject.SetIsPlayerObject(true);
 
             foreach (GameObject gameObject in physicsWorld.GetGameObject())
             {

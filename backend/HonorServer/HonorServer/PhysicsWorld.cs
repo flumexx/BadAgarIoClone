@@ -24,7 +24,7 @@ namespace HonorServer
             this.objectUpdatedHandler = objectUpdatedHandler;
             this.collisionTimer = new Timer();
 
-            ConfigureTimer();
+            ConfigureCollisionTimer();
         }
 
         public GameObject CreateObject(string name, float size, string color)
@@ -150,10 +150,24 @@ namespace HonorServer
 
         public void Start()
         {
-            collisionTimer.Enabled = true;
+            if (!collisionTimer.Enabled)
+            {
+                collisionTimer.Enabled = true;
+            }
         }
 
-        private void ConfigureTimer()
+        public void Stop()
+        {
+            if (collisionTimer.Enabled)
+            {
+                foreach (Spawner spawner in spawners)
+                {
+                    spawner.Stop();
+                }
+            }
+        }
+
+        private void ConfigureCollisionTimer()
         {
             collisionTimer.Interval = 10;
             collisionTimer.Elapsed += (object sender, ElapsedEventArgs e) =>
@@ -169,18 +183,40 @@ namespace HonorServer
                 PublishObjectDespawnedToChildren(secondGameObject);
                 PublishObjectDespawnedToParent(secondGameObject);
 
-                firstGameObject.SetSize(firstGameObject.GetSize() + secondGameObject.GetSize());
-                
-                PublishObjectUpdatedToParent(firstGameObject);
+                if (firstGameObject.GetIsPlayerObject())
+                {
+                    int scoreIncrease = 1;
+
+                    if (secondGameObject.GetIsPlayerObject())
+                    {
+                        scoreIncrease = secondGameObject.GetScore();
+                    }
+
+                    firstGameObject.SetScore(firstGameObject.GetScore() + scoreIncrease);
+                    firstGameObject.SetSize(firstGameObject.GetScore() / 10.0f);
+
+                    PublishObjectUpdatedToParent(firstGameObject);
+                }
             }
             else if (secondGameObject.GetSize() > firstGameObject.GetSize())
             {
                 PublishObjectDespawnedToChildren(firstGameObject);
                 PublishObjectDespawnedToParent(firstGameObject);
 
-                secondGameObject.SetSize(secondGameObject.GetSize() + firstGameObject.GetSize());
+                if (secondGameObject.GetIsPlayerObject())
+                {
+                    int scoreIncrease = 1;
 
-                PublishObjectUpdatedToParent(secondGameObject);
+                    if (firstGameObject.GetIsPlayerObject())
+                    {
+                        scoreIncrease = firstGameObject.GetScore();
+                    }
+
+                    secondGameObject.SetScore(secondGameObject.GetScore() + scoreIncrease);
+                    secondGameObject.SetSize(secondGameObject.GetScore() / 10.0f);
+
+                    PublishObjectUpdatedToParent(secondGameObject);
+                }
             }
         }
     }

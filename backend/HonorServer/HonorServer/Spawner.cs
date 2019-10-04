@@ -61,6 +61,14 @@ namespace HonorServer
             }
         }
 
+        public void Stop()
+        {
+            if (timer.Enabled)
+            {
+                timer.Enabled = false;
+            }
+        }
+
         public void PublishObjectSpawnedToParent(GameObject gameObject)
         {
             OnObjectSpawned(gameObject);

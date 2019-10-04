@@ -13,6 +13,8 @@ namespace HonorServer
         private string name;
         private float size;
         private string color;
+        private int score;
+        private bool isPlayerObject;
 
         private GameObject(string identifier, float posX, float posY, string name, float size, string color)
         {
@@ -22,6 +24,8 @@ namespace HonorServer
             this.name = name;
             this.size = size;
             this.color = color;
+            this.score = 20;
+            this.isPlayerObject = false;
         }
 
         public static GameObject Create(string name, float size, string color)
@@ -103,6 +107,26 @@ namespace HonorServer
         public void SetColor(string color)
         {
             this.color = color;
+        }
+
+        public int GetScore()
+        {
+            return score;
+        }
+
+        public void SetScore(int score)
+        {
+            this.score = score;
+        }
+
+        public bool GetIsPlayerObject()
+        {
+            return this.isPlayerObject;
+        }
+
+        public void SetIsPlayerObject(bool isPlayerObject)
+        {
+            this.isPlayerObject = isPlayerObject;
         }
     }
 }

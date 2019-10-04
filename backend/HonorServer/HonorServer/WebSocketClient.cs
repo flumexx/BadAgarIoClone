@@ -9,6 +9,7 @@ namespace HonorServer
     {
         private IWebSocketConnection connection;
         private GameObject playerObject;
+        
 
         public WebSocketClient(IWebSocketConnection connection)
         {
