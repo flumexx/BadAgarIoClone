@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BadAgarIoClone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<section class="container">
+    <!-- overlay -->
+    <section id="overlay">
+        <!-- left-bottom overlay: score -->
+        <span id="pverlay-counter-score" class="overlay-left-bottom">asd</span>
+        <!-- /left-bottom overlay: score -->
+    </section>
+    <!-- /overlay -->
+</section>
+<!-- loadingScreen -->
+<section id="loadingScreen">
+    <!-- animation -->
+    <div class="arc">
+    </div>
+    <!-- /animation -->
+    <h1 id="loadingScreen-text"><span>LOADING</span></h1>
+</section>
+<!-- /loadingScreen -->
+<!-- menu -->
+<section id="menu">
+    <!-- menu-form -->
+    <form id="menu-form" class="box" method="POST" action="#">
+        <!-- inputName -->
+        <h1>CHOOSE YOUR SETTINGS</h1>
+        <input name="name" type="text" value="An Named Cell">
+        <!-- /inputName -->
+        <!-- colorPicker -->
+        <div class="colorPicker">
+            <input class="red" type="radio" name="hat-color" value="red" id="hat-color-red"/>
+            <label class="red" for="hat-color-red">red</label>
+            <input class="orange" type="radio" name="hat-color" value="orange" id="hat-color-orange" />
+            <label class="orange" for="hat-color-orange">orange</label>
+            <input class="yellow" type="radio" name="hat-color" value="yellow" id="hat-color-yellow" />
+            <label class="yellow" for="hat-color-yellow">yellow</label>
+            <input class="green" type="radio" name="hat-color" value="green" id="hat-color-green" />
+            <label class="green" for="hat-color-green">green</label>
+            <input class="blue" type="radio" name="hat-color" value="blue" id="hat-color-blue" />
+            <label class="blue" for="hat-color-blue">blue</label>
+            <input class="indigo" type="radio" name="hat-color" value="indigo" id="hat-color-indigo" />
+            <label class="indigo" for="hat-color-indigo">indigo</label>
+            <input class="violet" type="radio" name="hat-color" value="violet" id="hat-color-violet" />
+            <label class="violet" for="hat-color-violet">violet</label>
+        </div>
+        <!-- /colorPicker -->
+        <input type="submit" value="START">
+    </form>
+    <!-- /menu-form -->
+</section>
+<!-- /menu -->
+
+<script src="vendor/jQuery/jquery-3.4.1.min.js"></script>
+<script>$("#menu").hide();</script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

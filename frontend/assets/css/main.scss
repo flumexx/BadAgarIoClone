@@ -1,0 +1,16 @@
+/*
+  Import utilities
+ */
+@import "utilities/variables";
+
+/*
+  Import base
+ */
+@import "base/reset";
+
+/*
+  Import modules
+ */
+@import "modules/gameArea";
+@import "modules/loadingScreen";
+@import "modules/gameMenu";

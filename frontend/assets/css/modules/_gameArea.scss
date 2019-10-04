@@ -1,0 +1,11 @@
+body {
+  background-color: $backgroundColor;
+  height: 100vh;
+  margin: 0px;
+  overflow: hidden;
+}
+
+canvas {
+  background-color: $backgroundColor;
+  position: absolute;
+}

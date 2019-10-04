@@ -1,0 +1,14 @@
+.overlay-left-bottom {
+  background-color: rgba(0, 1, 0, 0.3);
+  color: rgba(0, 1, 0, 0.3);
+  color: white;
+  padding: 10px 20px;
+  z-index: 10;
+}
+
+#overlay {
+  position: relative;
+  bottom: 0px;
+  left: 0px;
+  z-index: 11;
+}
